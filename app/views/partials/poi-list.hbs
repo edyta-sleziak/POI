@@ -1,0 +1,22 @@
+<section class="ui raised segment">
+    <div class="ui grid">
+        <table class="ui celled table segment">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each islands}}
+                <tr>
+                    <td> {{name}} </td>
+                    <td> {{description}} </td>
+                    <td> <a href="placeholder-islandprofile">See more...</a></td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>

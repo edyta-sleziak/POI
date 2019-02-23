@@ -1,0 +1,35 @@
+{
+  "name": "poi",
+  "version": "1.0.0",
+  "description": "Assignment 1 Enterprise Web Development - WIT - Edyta Sleziak",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edyta-sleziak/POI.git"
+  },
+  "author": "Edyta Sleziak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edyta-sleziak/POI/issues"
+  },
+  "homepage": "https://github.com/edyta-sleziak/POI#readme",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "handlebars": "^4.1.0",
+    "hapi": "^18.1.0",
+    "hapi-auth-cookie": "^9.1.0",
+    "inert": "^5.1.2",
+    "mongoose": "^5.4.15",
+    "vision": "^5.4.4"
+  },
+  "devDependencies": {
+    "prettier": "^1.16.4"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 120
+  }
+}
