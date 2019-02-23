@@ -14,6 +14,9 @@ module.exports = [
   { method: 'GET', path: '/home', config: Poi.home },
   { method: 'GET', path: '/create', config: Poi.create },
   { method: 'POST', path: '/add', config: Poi.addPOI },
+  { method: 'GET', path: '/details/{id}', config: Poi.showDetails },
+  { method: 'GET', path: '/editIsland/{id}', config: Poi.editIsland },
+  { method: 'POST', path: '/saveChanges/{id}', config: Poi.saveChanges},
 
   {
     method: 'GET',

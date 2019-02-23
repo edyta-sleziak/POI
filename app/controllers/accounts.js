@@ -2,12 +2,17 @@
 
 const Boom = require('boom');
 const User = require('../models/user');
+const Island = require('../models/island');
 
 const Accounts = {
   index: {
     auth: false,
-    handler: function(request, h) {
-      return h.view('main', { title: 'Welcome to Irish Island' });
+    handler: async function(request, h) {
+      const islands = await Island.find();
+      return h.view('main', {
+        title: 'Welcome to Irish Island',
+        islands: islands
+      });
     }
   },
   showSignup: {
