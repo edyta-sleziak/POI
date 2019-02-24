@@ -7,7 +7,10 @@ const poiSchema = new Schema({
   name: String,
   description: String,
   addedBy: String,
-  lastModifiedBy: String,
+  modifiedBy: String,
+  longitude: String,
+  latitude: String,
+  category: String,
   imageURL: String
 });
 

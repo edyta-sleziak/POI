@@ -1,0 +1,42 @@
+{{>mainmenu}}
+
+<div class="ui stacked segment">
+    <button class="ui button"><a href="/editIsland/{{island.id}}">Edit</a></button>
+    <button class="ui button"><a href="/removeIsland/{{island.id}}">Remove</a></button>
+    <div class="ui divider"></div>
+    <h1 class="ui center aligned header">{{island.name}}</h1>
+    <h4 class="ui horizontal divider header">
+        <i class="file alternate outline icon"></i>
+        Description
+    </h4>
+    <article>{{island.description}}</article>
+    <h4 class="ui horizontal divider header">
+        <i class="globe icon"></i>
+        Location
+    </h4>
+    <table class="ui definition table">
+        <tbody>
+        <tr>
+            <td class="two wide column">Category</td>
+            <td>{{island.category}}</td>
+        </tr>
+        <tr>
+            <td>Latitude</td>
+            <td>{{island.latitude}}</td>
+        </tr>
+        <tr>
+            <td>Longitude</td>
+            <td>{{island.longitude}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <h4 class="ui horizontal divider header">
+        <i class="file image outline icon"></i>
+        Gallery
+    </h4>
+    <div class="ui divider"></div>
+    <p>
+        Added by: {{island.addedBy}}<br />
+        Modified by: {{island.modifiedBy}}
+    </p>
+</div>

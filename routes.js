@@ -16,8 +16,8 @@ module.exports = [
   { method: 'POST', path: '/add', config: Poi.addPOI },
   { method: 'GET', path: '/details/{id}', config: Poi.showDetails },
   { method: 'GET', path: '/editIsland/{id}', config: Poi.editIsland },
-  { method: 'POST', path: '/saveChanges/{id}', config: Poi.saveChanges},
-
+  { method: 'POST', path: '/saveChanges/{id}', config: Poi.saveChanges },
+  { method: 'GET', path: '/removeIsland/{id}', config: Poi.removeIsland },
   {
     method: 'GET',
     path: '/{param*}',

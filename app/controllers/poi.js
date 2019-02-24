@@ -72,6 +72,18 @@ const Poi = {
       await island.save();
       return h.redirect('/details/'+island.id)
     }
+  },
+  removeIsland: {
+    handler: async function(request, h) {
+      //const id = request.params.id;
+      const island = await Island.findById(request.params.id);
+      await Island.deleteOne(island);
+      const islands = await Island.find();
+      return h.redirect('/home', {
+        title: 'Home',
+        islands: islands
+      });
+    }
   }
 };
 

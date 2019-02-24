@@ -2,18 +2,48 @@
 
 <section class="ui raised segment">
     <div class="ui stacked segment">
-        <form class="ui form" action="/add" method="POST">
-            <div class="fields">
-                <div class="four wide field">
+        <form action="/add" method="POST">
+            <div class="ui ten wide column fluid form">
+                <div class="field">
                     <label>Name</label>
-                    <input type="text" name="name" placeholder="Name">
+                    <input type="text" name="name" placeholder="Name"/>
                 </div>
-                <div class="twelve wide field">
+                <h4 class="ui horizontal divider header">
+                    <i class="file alternate outline icon"></i>
+                    Description
+                </h4>
+                <div class="field">
                     <label>Description</label>
-                    <input type="text" name="description" placeholder="Description">
+                    <input type="text" name="description" placeholder="Description"/>
                 </div>
             </div>
-            <button class="ui submit button" type="submit">Add</button>
+            <h4 class="ui horizontal divider header">
+                <i class="globe icon"></i>
+                Location
+            </h4>
+            <table class="ui definition table">
+                <tbody>
+                <tr>
+                    <td class="two wide column">Category</td>
+                    <td><div class="ui input"><input type="text" name="category" placeholder="Category"></div></td>
+                </tr>
+                <tr>
+                    <td>Latitude</td>
+                    <td><div class="ui input"><input type="text" name="latitude" placeholder="55.55555"></div></td>
+                </tr>
+                <tr>
+                    <td>Longitude</td>
+                    <td><div class="ui input"><input type="text" name="longitude" placeholder="44.44444"></div></td>
+                </tr>
+                </tbody>
+            </table>
+            <h4 class="ui horizontal divider header">
+                <i class="file image outline icon"></i>
+                Gallery
+            </h4>
+            <button class="ui button">Add new picture</button>
+            <div class="ui divider"></div>
+            <button class="ui submit button" type="submit">Save changes</button>
         </form>
     </div>
 </section>
