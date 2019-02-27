@@ -2,6 +2,8 @@
 
 const Island = require('../models/island');
 const User =  require('../models/user');
+var cloudinary = require('cloudinary');
+
 
 const Poi = {
   home: {
@@ -37,13 +39,14 @@ const Poi = {
     }
   },
   showDetails: {
+    auth: false,
     handler: async function(request, h) {
       const id = request.params.id;
       const island = await Island.findById(id);
       return h.view('details', {
         title: 'Details of ' + island.name,
         island: island
-      })
+      });
     }
   },
   editIsland: {

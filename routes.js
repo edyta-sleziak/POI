@@ -10,6 +10,9 @@ module.exports = [
   { method: 'GET', path: '/logout', config: Accounts.logout },
   { method: 'POST', path: '/signup', config: Accounts.signup },
   { method: 'POST', path: '/login', config: Accounts.login },
+  { method: 'GET', path: '/settings', config: Accounts.settings },
+  { method: 'POST', path: '/updateSettings', config: Accounts.updateSettings },
+  { method: 'GET', path: '/deleteAccount', config: Accounts.deleteAccount },
 
   { method: 'GET', path: '/home', config: Poi.home },
   { method: 'GET', path: '/create', config: Poi.create },

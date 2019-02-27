@@ -4,7 +4,8 @@
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Description</th>
+                <th>Category</th>
+                <th>Location</th>
                 <th></th>
             </tr>
             </thead>
@@ -12,7 +13,8 @@
             {{#each islands}}
                 <tr>
                     <td> {{name}} </td>
-                    <td> {{description}} </td>
+                    <td> {{category}} </td>
+                    <td> Lat.: {{latitude}}, Long.: {{longitude}} </td>
                     <td> <a href="/details/{{id}}">See more...</a></td>
                 </tr>
             {{/each}}

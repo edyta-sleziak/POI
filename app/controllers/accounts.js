@@ -1,6 +1,7 @@
 'use strict';
 
 const Boom = require('boom');
+const Joi = require('joi');
 const User = require('../models/user');
 const Island = require('../models/island');
 
@@ -13,7 +14,7 @@ const Accounts = {
         title: 'Welcome to Irish Island',
         islands: islands
       });
-    }
+    },
   },
   showSignup: {
     auth: false,
@@ -23,6 +24,25 @@ const Accounts = {
   },
   signup: {
     auth: false,
+    validate: {
+      payload: {
+        firstName: Joi.string().required(),
+        lastName: Joi.string().required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().required()
+      },
+      options: {
+        abortEarly: false
+      },
+      failAction: function(request, h, error) {
+        return h.view('signup', {
+          title: 'Sign up error',
+          errors: error.details
+        })
+          .takeover()
+          .code(400);
+      }
+    },
     handler: async function(request, h) {
       try {
         const payload = request.payload;
@@ -71,6 +91,61 @@ const Accounts = {
   },
   logout: {
     handler: function(request, h) {
+      request.cookieAuth.clear();
+      return h.redirect('/');
+    }
+  },
+  settings: {
+    handler: async function(request, h) {
+      const user = await User.findById(request.auth.credentials.id);
+      return h.view('settings', {
+        title: 'Account settings',
+        user: user
+      });
+    }
+  },
+  updateSettings: {
+    validate: {
+      payload: {
+        firstName: Joi.string().required(),
+        lastName: Joi.string().required(),
+        email: Joi.string()
+          .email()
+          .required(),
+        password: Joi.string().required()
+      },
+      options: {
+        abortEarly: false
+      },
+      failAction: function(request, h, error) {
+        return h
+          .view('settings', {
+            title: 'Settings error',
+            errors: error.details
+          }).takeover().code(400);
+      }
+    },
+    handler: async function(request, h) {
+      try {
+        const userEdit = request.payload;
+        const id = request.auth.credentials.id;
+        const user = await User.findById(id);
+        user.firstName = userEdit.firstName;
+        user.lastName = userEdit.lastName;
+        user.email = userEdit.email;
+        user.password = userEdit.password;
+        await user.save();
+        return h.redirect('/settings');
+      } catch (err) {
+        return h.view('main', { errors: [{ message: err.message }] });
+      }
+    }
+  },
+  deleteAccount: {
+    handler: async function(request, h) {
+      const id = request.auth.credentials.id;
+      const user = await User.findById(id);
+      await User.deleteOne(user);
       request.cookieAuth.clear();
       return h.redirect('/');
     }

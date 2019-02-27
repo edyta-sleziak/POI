@@ -1,0 +1,29 @@
+{{> mainmenu}}
+
+<section class="ui raised segment">
+    <h3 class="ui header">User's settings</h3>
+    <div class="ui grid">
+        <div class="ten wide column">
+            <div class="ui form">
+            <form action="/updateSettings" method="POST">
+                <div class="two fields">
+                    <div class="field">
+                        <label>First Name</label> <input value="{{user.firstName}}" type="text" name="firstName" />
+                    </div>
+                    <div class="field">
+                        <label>Last Name</label> <input value="{{user.lastName}}" type="text" name="lastName" />
+                    </div>
+                </div>
+                <div class="field"><label>Email</label> <input value="{{user.email}}" type="text" name="email" /></div>
+                <div class="field"><label>Password</label> <input type="password" name="password" /></div>
+                <button class="ui blue submit button">Save changes</button>
+                {{> error}}
+            </form>
+            </div>
+        </div>
+        <div class="six wide center aligned middle aligned column">
+            <a href="/deleteAccount"><button class="ui red button" type="button">Delete account</button></a><br /><br />
+            <article>Clicking on the above button will permanently delete your account. You will no longer we able to log in.  </article>
+        </div>
+    </div>
+</section>
