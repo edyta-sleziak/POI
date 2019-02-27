@@ -1,6 +1,6 @@
 <section class="ui raised segment">
     <div class="ui grid">
-        <table class="ui celled table segment">
+        <table class="ui fixed celled table">
             <thead>
             <tr>
                 <th>Name</th>
@@ -14,7 +14,7 @@
                 <tr>
                     <td> {{name}} </td>
                     <td> {{category}} </td>
-                    <td> Lat.: {{latitude}}, Long.: {{longitude}} </td>
+                    <td> Lat.: {{latitude}}, <br />Long.: {{longitude}} </td>
                     <td> <a href="/details/{{id}}">See more...</a></td>
                 </tr>
             {{/each}}

@@ -28,9 +28,8 @@ const Poi = {
       const newPOI = new Island({
         name: data.name,
         description: data.description,
-        addedBy: user.email,
-        modifiedBy: user.email,
-        category: data.category,
+        addedBy: user._id,
+        modifiedBy: user._id,
         longitude: data.longitude,
         latitude: data.latitude
       });
@@ -71,7 +70,7 @@ const Poi = {
       island.category = newDetails.category;
       const userId = request.auth.credentials.id;
       const user = await User.findById(userId);
-      island.modifiedBy = user.email;
+      island.modifiedBy = user._id;
       await island.save();
       return h.redirect('/details/'+island.id)
     }
