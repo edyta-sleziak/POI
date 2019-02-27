@@ -3,7 +3,7 @@
 const Mongoose = require('mongoose');
 const Schema = Mongoose.Schema;
 
-const poiSchema = new Schema({
+const island = new Schema({
   name: String,
   description: String,
   addedBy: String,
@@ -14,4 +14,4 @@ const poiSchema = new Schema({
   imageURL: String
 });
 
-module.exports = Mongoose.model('poi', poiSchema);
+module.exports = Mongoose.model('island', island);
