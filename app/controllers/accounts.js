@@ -11,9 +11,34 @@ const Accounts = {
     handler: async function(request, h) {
       const islands = await Island.find();
       return h.view('main', {
-        title: 'Welcome to Irish Island',
+        title: 'Islands',
         islands: islands
-      });
+      })
+    },
+  },
+  home: {
+    handler: async function(request, h) {
+      const islands = await Island.find();
+      const id = request.auth.credentials.id;
+      const user = await User.findById(id);
+      if (user == null) {
+        return h.view('main', {
+          title: 'Islands',
+          islands: islands
+        })
+      } else if (user.isAdmin == true) {
+        console.log(user._id + ' - isAdmin: '+ user.isAdmin);
+        return h.view('main-admin', {
+          title: 'Islands',
+          islands: islands
+        })
+      } else if (user.isAdmin == false) {
+        console.log(user._id + ' - isAdmin: '+ user.isAdmin);
+        return h.view('main-user', {
+          title: 'Islands',
+          islands: islands
+        })
+      }
     },
   },
   showSignup: {
@@ -55,7 +80,10 @@ const Accounts = {
           firstName: payload.firstName,
           lastName: payload.lastName,
           email: payload.email,
-          password: payload.password
+          password: payload.password,
+          isAdmin: false,
+          signupDate: Date("<YYYY-mm-ddTHH:MM:ss>"),
+          lastLoginDate: Date("<YYYY-mm-ddTHH:MM:ss>")
         });
         user = await newUser.save();
         request.cookieAuth.set({ id: user.id });
@@ -83,9 +111,18 @@ const Accounts = {
         }
         user.comparePassword(password);
         request.cookieAuth.set({ id: user.id });
-        return h.redirect('/home');
+        user.lastLoginDate = Date("<YYYY-mm-ddTHH:MM:ss>");
+        if (user.isAdmin == true) {
+          console.log(user._id + ' - isAdmin: ' + user.isAdmin);
+          return h.redirect('/adminDashboard')
+        } else {
+          console.log(user._id + ' - isAdmin: ' + user.isAdmin);
+          return h.redirect('/home')
+        }
       } catch (err) {
         return h.view('login', { errors: [{ message: err.message }] });
+        const message = 'Incorrect e-mail or password';
+        throw new Boom(message);
       }
     }
   },
@@ -148,6 +185,38 @@ const Accounts = {
       await User.deleteOne(user);
       request.cookieAuth.clear();
       return h.redirect('/');
+    }
+  },
+  adminDashboard: {
+    handler: async function(request,h) {
+      const users = await User.find();
+      const islands = await Island.find();
+      return h.view('adminDashboard', {
+        title: 'Admin Dashboard',
+        users: users,
+        islands: islands
+      })
+    }
+  },
+  deleteUser: {
+    handler: async function(request, h) {
+      const user = await User.findById(request.params.id);
+      await User.deleteOne(user);
+      const users = await User.find();
+      return h.redirect('/adminDashboard', {
+        title: 'Admin Dashboard',
+        users: users
+      });
+    }
+  },
+  saveAdminChanges: {
+    handler: async function(request, h) {
+      //todo
+      const users = User.find();
+      return h.redirect('/adminDashboard', {
+        title: 'Admin Dashboard',
+        users: users
+      });
     }
   }
 };

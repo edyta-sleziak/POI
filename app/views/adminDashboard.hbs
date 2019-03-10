@@ -1,0 +1,30 @@
+{{>adminMenu}}
+
+<div class="ui stacked segment">
+
+    <h4 class="ui horizontal divider header">
+        <i class="chart bar icon"></i>
+        Statistics
+    </h4>
+    <p>
+        Users: <br />
+        Islands: <br />
+        Last modified island: <br />
+    </p>
+
+    <h4 class="ui horizontal divider header">
+        <i class="tasks icon"></i>
+        Categories
+    </h4>
+
+    <h4 class="ui horizontal divider header">
+        <i class="user icon"></i>
+        List of users
+    </h4>
+    <form action="/saveAdminChanges" method="POST">
+    <button class="ui submit button">Submit changes</button>
+        {{>usersList}}
+    <button class="ui submit button">Submit changes</button>
+    </form>
+
+</div>

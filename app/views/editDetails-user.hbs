@@ -13,7 +13,7 @@
             </h4>
         <div class="field">
             <label>Description</label>
-            <textarea name="description" value="{{island.description}}"></textarea>
+            <textarea name="description" value="{{island.description}}">{{island.description}}</textarea>
         </div>
         </div>
         <h4 class="ui horizontal divider header">
@@ -54,8 +54,8 @@
                 const myWidget = cloudinary.createUploadWidget({
                     cloudName: 'doc1qd54g',
                     uploadPreset: 'oxnqgnlu',
-                    sources: [ 'local', 'url', 'image_search'],
                     googleApiKey: 'AIzaSyBY4YLivx-OyLXSfXgZN69roFURi2Fe0wA',
+                    sources: [ 'local', 'url', 'image_search'],
                     tags: ['{{island.id}}'] }, (error, result) => { console.log(error, result) })
                 document.getElementById("upload_widget").addEventListener("click", function(){
                     myWidget.open();

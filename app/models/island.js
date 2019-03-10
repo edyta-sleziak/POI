@@ -11,7 +11,8 @@ const island = new Schema({
   longitude: String,
   latitude: String,
   category: String,
-  imageURL: String
+  createdDate: String,
+  lastModifiedDate: String
 });
 
 module.exports = Mongoose.model('island', island);

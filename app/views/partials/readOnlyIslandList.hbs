@@ -1,0 +1,24 @@
+<section class="ui raised segment">
+    <div class="ui grid">
+        <table class="ui fixed celled table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each islands}}
+                <tr>
+                    <td> {{name}} </td>
+                    <td> {{category}} </td>
+                    <td> Lat.: {{latitude}}, <br />Long.: {{longitude}} </td>
+                    <td> <a href="/showDetails/{{id}}">See more...</a></td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
