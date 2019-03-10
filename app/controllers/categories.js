@@ -8,7 +8,6 @@ const Categories = {
     handler: async function(request, h) {
       const payload = request.payload;
       const newCategory = new Category({
-        catId: payload.catId,
         name: payload.name,
       });
       await newCategory.save();
@@ -26,7 +25,6 @@ const Categories = {
       const newDetails = request.payload;
       const id = request.params.id;
       const updatedCategory = await Category.findById(id);
-      updatedCategory.catId = newDetails.catId;
       updatedCategory.name = newDetails.name;
       await updatedCategory.save();
       const categories = Category.find();

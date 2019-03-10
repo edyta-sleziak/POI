@@ -20,19 +20,13 @@
         <form action="/addCategory" method="POST">
             <h3 class="ui header">Add category</h3>
             <div class="two fields">
-                <div class="field">
-                    <input placeholder="ID" type="text" name="catId" />
-                </div>
-                <div class="field">
-                    <input placeholder="Categories name" type="text" name="name" />
-                </div>
+                <input placeholder="Categories name" type="text" name="name" />
                 <button class="ui red submit button">Add</button>
             </div>
         </form>
         <table class="ui table">
                 <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Name</th>
                     <th>Options</th>
                 </tr>
@@ -41,7 +35,6 @@
                 {{#each categories}}
                 <tr>
                     <form action="/editCategory/{{id}}" method="POST">
-                    <td><input value="{{catId}}" type="text" name="catId" /></td>
                     <td><input value="{{name}}" type="text" name="name" /></td>
                     <td>
                         <button class="ui submit button">Save</button>

@@ -2,7 +2,7 @@
 
 const Island = require('../models/island');
 const User =  require('../models/user');
-var cloudinary = require('cloudinary');
+const Category = require('../models/category');
 
 
 const Poi = {
@@ -108,15 +108,18 @@ const Poi = {
       const island = await Island.findById(id);
       const userId = request.auth.credentials.id;
       const user = await User.findById(userId);
+      const categories =  await Category.find();
       if (user.isAdmin == true) {
         return h.view('editDetails-admin', {
           title: 'Edit'+island.name,
-          island: island
+          island: island,
+          categories: categories
         })
       } else if (user.isAdmin == false) {
         return h.view('editDetails-user', {
           title: 'Edit'+island.name,
-          island: island
+          island: island,
+          categories: categories
         })
       }
     }
