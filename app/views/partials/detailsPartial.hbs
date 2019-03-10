@@ -1,0 +1,50 @@
+    <h1 class="ui center aligned header">{{island.name}}</h1>
+    <h4 class="ui horizontal divider header">
+        <i class="file alternate outline icon"></i>
+        Description
+    </h4>
+    <div class="container">
+        <article>{{island.description}}</article>
+    </div>
+    <h4 class="ui horizontal divider header">
+        <i class="globe icon"></i>
+        Location
+    </h4>
+    <table class="ui definition table">
+        <tbody>
+        <tr>
+            <td class="two wide column">Categories</td>
+            <td>{{island.category}}</td>
+        </tr>
+        <tr>
+            <td>Latitude</td>
+            <td>{{island.latitude}}</td>
+        </tr>
+        <tr>
+            <td>Longitude</td>
+            <td>{{island.longitude}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <h4 class="ui horizontal divider header">
+        <i class="file image outline icon"></i>
+        Gallery
+    </h4>
+    <div id="gallery" style="max-width:80%; margin:auto"></div>
+    <script type="text/javascript">
+        const gallery = cloudinary.galleryWidget({
+            container: "#gallery",
+            cloudName: "doc1qd54g",
+            mediaAssets: [
+                {tag: "{{island.id}}"}
+            ]
+        });
+        gallery.render();
+    </script>
+    <div class="ui divider"></div>
+    <p>
+        Added by: {{island.addedBy}} on
+        on: {{island.createdDate}}<br />
+        Modified by: {{island.modifiedBy}}
+        on: {{island.lastModifiedDate}}<br />
+    </p>

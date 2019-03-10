@@ -1,0 +1,58 @@
+{{>adminMenu}}
+
+<div class="ui stacked segment">
+
+    <h4 class="ui horizontal divider header">
+        <i class="chart bar icon"></i>
+        Statistics
+    </h4>
+    <p>
+        Users: <br />
+        Islands: <br />
+        Last modified island: <br />
+    </p>
+
+    <h4 class="ui horizontal divider header">
+        <i class="tasks icon"></i>
+        Categories
+    </h4>
+    <div class="ui stacked fluid form segment">
+        <form action="/addCategory" method="POST">
+            <h3 class="ui header">Add category</h3>
+            <div class="two fields">
+                <input placeholder="Categories name" type="text" name="name" />
+                <button class="ui red submit button">Add</button>
+            </div>
+        </form>
+        <table class="ui table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each categories}}
+                <tr>
+                    <form action="/editCategory/{{id}}" method="POST">
+                    <td><input value="{{name}}" type="text" name="name" /></td>
+                    <td>
+                        <button class="ui submit button">Save</button>
+                    </td>
+                    </form>
+                </tr>
+                {{/each}}
+                </tbody>
+        </table>
+    </div>
+    <h4 class="ui horizontal divider header">
+        <i class="user icon"></i>
+        List of users
+    </h4>
+    <form action="/saveAdminChanges" method="POST">
+    <button class="ui submit button">Submit changes</button>
+        {{>usersList}}
+    <button class="ui submit button">Submit changes</button>
+    </form>
+
+</div>

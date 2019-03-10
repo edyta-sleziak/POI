@@ -1,6 +1,7 @@
 'use strict';
 require('dotenv').config();
 const Hapi = require('hapi');
+const cloudinary = require('cloudinary');
 
 const server = Hapi.server({
   port: 3000,
@@ -42,6 +43,12 @@ async function init() {
   server.route(require('./routes'));
   await server.start();
   console.log(`Server running at: ${server.info.uri}`);
+
+  cloudinary.config({
+    cloud_name: process.env.cloudinary_cloudname,
+    api_key: process.env.cloudinary_apikey,
+    api_secret: process.env.cloudinary_apisecret
+  });
 }
 
 process.on('unhandledRejection', err => {
