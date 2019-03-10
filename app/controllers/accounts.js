@@ -3,6 +3,7 @@
 const Boom = require('boom');
 const Joi = require('joi');
 const User = require('../models/user');
+const Category = require('../models/category');
 const Island = require('../models/island');
 
 const Accounts = {
@@ -191,10 +192,12 @@ const Accounts = {
     handler: async function(request,h) {
       const users = await User.find();
       const islands = await Island.find();
+      const categories = await Category.find();
       return h.view('adminDashboard', {
         title: 'Admin Dashboard',
         users: users,
-        islands: islands
+        islands: islands,
+        categories: categories,
       })
     }
   },

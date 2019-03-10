@@ -2,6 +2,7 @@
 
 const Accounts = require('./app/controllers/accounts');
 const Poi = require('./app/controllers/poi');
+const Categories = require('./app/controllers/categories');
 
 module.exports = [
   { method: 'GET', path: '/', config: Accounts.index },
@@ -25,8 +26,11 @@ module.exports = [
   { method: 'GET', path: '/editIsland/{id}', config: Poi.editIsland },
   { method: 'POST', path: '/saveChanges/{id}', config: Poi.saveChanges },
   { method: 'GET', path: '/removeIsland/{id}', config: Poi.removeIsland },
-  {
-    method: 'GET',
+
+  { method: 'POST', path: '/addCategory', config: Categories.addCategory },
+  { method: 'POST', path: '/editCategory/{id}', config: Categories.editCategory },
+
+  {method: 'GET',
     path: '/{param*}',
     handler: {
       directory: {
