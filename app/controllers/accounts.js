@@ -211,8 +211,15 @@ const Accounts = {
   },
   saveAdminChanges: {
     handler: async function(request, h) {
-      //todo
-      const users = User.find();
+      const data = request.payload;
+      const users = await User.find();
+      users.forEach(
+        function(usr) {
+          console.log("isAdmin_" + usr._id + " - " + data["isAdmin_" + usr._id]);
+          usr.isAdmin = data["isAdmin_" + usr._id];
+          usr.save()
+        }
+      );
       return h.redirect('/adminDashboard', {
         title: 'Admin Dashboard',
         users: users
