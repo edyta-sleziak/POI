@@ -31,6 +31,8 @@
     "vision": "^5.4.4"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2",
     "prettier": "^1.16.4"
   },
   "prettier": {
