@@ -1,0 +1,107 @@
+{
+  "poiService": "http://localhost:4000",
+  "users" : [
+    {
+      "firstName" : "User1",
+      "lastName" : "UsersLName",
+      "email" : "api1@test.com",
+      "password" : "secret"
+    },
+    {
+      "firstName" : "User2",
+      "lastName" : "UsersLName",
+      "email" : "api2@test.com",
+      "password" : "secret"
+    },
+    {
+      "firstName" : "User3",
+      "lastName" : "UsersLName",
+      "email" : "api3@test.com",
+      "password" : "secret"
+    },
+    {
+      "firstName" : "User4",
+      "lastName" : "UsersLName",
+      "email" : "api4@test.com",
+      "password" : "secret"
+    }
+  ],
+  "newUser" :
+  {
+    "firstName" : "NewUser",
+    "lastName" : "NewUsersLName",
+    "email" : "api2@test.com",
+    "password" : "secret"
+  }
+,
+  "categories" : [
+    {
+      "name" : "Category1"
+    },
+    {
+      "name" : "Category2"
+    },
+    {
+      "name" : "Category3"
+    },
+    {
+      "name" : "Category4"
+    }
+  ],
+  "newCategory" :
+  {
+    "name" : "New Category"
+  },
+  "islands" : [
+    {
+      "name": "Island1",
+      "description": "Test description of Island1",
+      "category": "Cat2",
+      "addedBy": "User1",
+      "modifiedBy": "User1"
+    },
+    {
+      "name": "Island2",
+      "description": "Test description of Island2",
+      "category": "Cat2",
+      "addedBy": "User2",
+      "modifiedBy": "User1"
+    },
+    {
+      "name": "Island3",
+      "description": "Test description of Island3",
+      "category": "Cat1",
+      "addedBy": "User1",
+      "modifiedBy": "User1"
+    },
+    {
+      "name": "Island4",
+      "description": "Test description of Island4",
+      "category": "Cat2",
+      "addedBy": "User2",
+      "modifiedBy": "User2"
+    },
+    {
+      "name": "Island5",
+      "description": "Test description of Island5",
+      "category": "Cat1",
+      "addedBy": "User2",
+      "modifiedBy": "User1"
+    },
+    {
+      "name": "Island6",
+      "description": "Test description of Island6",
+      "category": "Cat2",
+      "addedBy": "User1",
+      "modifiedBy": "User2"
+    }
+  ],
+  "newIsland" : {
+    "name": "New Island",
+    "description": "Description of new island",
+    "category": "Cat2",
+    "addedBy": "User1",
+    "modifiedBy": "User2"
+  }
+
+}
