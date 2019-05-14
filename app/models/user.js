@@ -2,6 +2,8 @@
 
 const Boom = require('boom');
 const Mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
 const Schema = Mongoose.Schema;
 
 const userSchema = new Schema({
@@ -19,12 +21,9 @@ userSchema.statics.findByEmail = function(email) {
 };
 
 
-userSchema.methods.comparePassword = function(candidatePassword) {
-  const isMatch = this.password === candidatePassword;
-  if (!isMatch) {
-    throw new Boom('Password mismatch');
-  }
-  return this;
+userSchema.methods.comparePassword = async function(candidatePassword) {
+  const isMatch = await bcrypt.compare(candidatePassword, this.password) ;
+  return isMatch;
 };
 
 module.exports = Mongoose.model('User', userSchema);

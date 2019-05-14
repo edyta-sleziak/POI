@@ -6,14 +6,18 @@ const Boom = require('boom');
 const Category = {
 
   find: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       const Categories = await CategoryModel.find();
       return Categories;
     }
   },
   findOne: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       try {
         const Category = await CategoryModel.findOne({ _id: request.params.id });
@@ -27,7 +31,9 @@ const Category = {
     }
   },
   create: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       const newCategory = new CategoryModel(request.payload);
       const Category = await newCategory.save();
@@ -38,16 +44,20 @@ const Category = {
     }
   },
   deleteAll: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       await CategoryModel.remove({});
       return {success: true};
     }
   },
   deleteOne: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
-      const Category = await CategoryModel.deleteOne({ _id: request.params.id })
+      const Category = await CategoryModel.deleteOne({ _id: request.params.id });
       if(Category) {
         return { success: true }
       }

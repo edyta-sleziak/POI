@@ -35,6 +35,19 @@ const Categories = {
         categories: categories,
       });
     }
+  },
+  removeCategory: {
+    handler: async function(request, h) {
+      const category = await Category.findById(request.params.id);
+      await Category.deleteOne(category);
+      const categories = await Category.find();
+      const users = User.find();
+      return h.redirect('/adminDashboard', {
+        title: 'Admin Dashboard',
+        users: users,
+        categories: categories,
+      });
+    }
   }
 }
 

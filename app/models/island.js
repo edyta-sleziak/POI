@@ -15,4 +15,4 @@ const island = new Schema({
   lastModifiedDate: String
 });
 
-module.exports = Mongoose.model('island', island);
+module.exports = Mongoose.model('Island', island);

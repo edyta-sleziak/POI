@@ -12,6 +12,7 @@ module.exports = [
   { method: 'GET', path: '/logout', config: Accounts.logout },
   { method: 'POST', path: '/signup', config: Accounts.signup },
   { method: 'POST', path: '/login', config: Accounts.login },
+  { method: ['POST', 'GET'], path: '/foursquarelogin', config: Accounts.foursquareLogin },
   { method: 'GET', path: '/settings', config: Accounts.settings },
   { method: 'POST', path: '/updateSettings', config: Accounts.updateSettings },
   { method: 'GET', path: '/deleteUser/{id}', config: Accounts.deleteUser },

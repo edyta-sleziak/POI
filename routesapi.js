@@ -12,9 +12,10 @@ module.exports = [
   { method: 'DELETE', path: '/api/poi', config: Poi.deleteAll },
   { method: 'DELETE', path: '/api/poi/{id}', config: Poi.deleteOne },
   { method: 'DELETE', path: '/api/poi/{id}/userAdded', config: Poi.removeUserAdded },
-  { method: 'DELETE', path: '/api/poi/{id}/category', config: Poi.removeFromCategory },
+  { method: 'DELETE', path: '/api/poi/{category}/category', config: Poi.removeFromCategory },
   { method: 'DELETE', path: '/api/poi/{id}/userModified', config: Poi.removeUserModified },
 
+  { method: 'POST', path: '/api/user/authenticate', config: User.authenticate },
   { method: 'GET', path: '/api/user', config: User.find },
   { method: 'GET', path: '/api/user/{id}', config: User.findOne },
   { method: 'POST', path: '/api/user', config: User.create },

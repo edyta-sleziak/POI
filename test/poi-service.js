@@ -62,6 +62,22 @@ class PoiService {
     const response = await axios.delete(this.baseUrl + '/api/poi/' + id);
     return response.data;
   }
+
+  async deleteAllIslandsAddedByUser(id) {
+    const response = await axios.delete(this.baseUrl + '/api/poi/' + id + '/userAdded');
+    return response.data;
+  }
+
+  async deleteAllIslandsModifiedByUser(id) {
+    const response = await axios.delete(this.baseUrl + '/api/poi/' + id + '/userModified');
+    return response.data;
+  }
+
+  async deleteIslandsOfCategory(category) {
+    const response = await axios.delete(this.baseUrl + '/api/poi/' + category + '/category');
+    return response.data;
+  }
+
   async getUsers() {
     const response = await axios.get(this.baseUrl + '/api/user');
     return response.data;
@@ -89,6 +105,20 @@ class PoiService {
   async createUser(newUser) {
     const response = await axios.post(this.baseUrl + '/api/user', newUser);
     return response.data;
+  }
+
+  async authenticate(newUser) {
+    try {
+      const response = await axios.post(this.baseUrl + '/api/user/authenticate', newUser);
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
+      return response.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async clearAuth(user) {
+    axios.defaults.headers.common['Authorization'] = '';
   }
 
   async deleteAllCategories() {

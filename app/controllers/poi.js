@@ -49,7 +49,7 @@ const Poi = {
         name: data.name,
         description: data.description,
         addedBy: user.fName + ' ' + user.lName,
-        modifiedBy: user._id,
+        modifiedBy: user.fName + ' ' + user.lName,
         longitude: data.longitude,
         latitude: data.latitude,
         createdDate: Date("<YYYY-mm-ddTHH:MM:ss>"),

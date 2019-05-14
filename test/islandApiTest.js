@@ -4,6 +4,7 @@ const assert = require('chai').assert;
 const PoiService = require('./poi-service');
 const fixtures = require('./fixtures.json');
 const _ = require('lodash');
+const utils = require('../app/api/utils.js');
 
 const poiService = new PoiService('http://localhost:4000');
 
@@ -11,12 +12,24 @@ suite('Islands API tests', function () {
 
   let islands = fixtures.islands;
   let newIsland = fixtures.newIsland;
+  let newUser = fixtures.newUser;
 
-  setup(async function () {
+  suiteSetup(async function() {
+    //await poiService.deleteAllUsers();
+    const returnedUser = await poiService.createUser(newUser);
+    const response = await poiService.authenticate(newUser);
+  });
+
+  suiteTeardown(async function() {
+    await poiService.deleteAllUsers();
+    poiService.clearAuth();
+  });
+
+  setup(async function() {
     await poiService.deleteAllIslands();
   });
 
-  teardown(async function () {
+  teardown(async function() {
     await poiService.deleteAllIslands();
   });
 
@@ -55,6 +68,37 @@ suite('Islands API tests', function () {
     const newAmount = allIslands.length;
     assert(newAmount === amount - 1);
   });
+
+  test('delete islands added by given user', async function () {
+    for (let i of islands) {
+      await poiService.createIsland(i);
+    }
+    const allNotMatchingIslands = await poiService.getIslandByAdded("User2");
+    await poiService.deleteAllIslandsAddedByUser("User1");
+    const allIslands = await poiService.getIslands();
+    assert.equal(allIslands.length, allNotMatchingIslands.length);
+  });
+  test('delete islands modified by given user', async function () {
+    for (let i of islands) {
+      await poiService.createIsland(i);
+    }
+    const allNotMatchingIslands = await poiService.getIslandByModified("User2");
+    await poiService.deleteAllIslandsModifiedByUser("User1");
+    const allIslands = await poiService.getIslands();
+    assert.equal(allIslands.length, allNotMatchingIslands.length);
+  });
+  test('delete islands from category', async function () {
+    for (let i of islands) {
+      await poiService.createIsland(i);
+    }
+    const allNotMatchingIslands = await poiService.getIslandByCategory("Cat2");
+    console.log(allNotMatchingIslands.length);
+    await poiService.deleteIslandsOfCategory("Cat1");
+    const allIslands = await poiService.getIslands();
+    assert.equal(allIslands.length, allNotMatchingIslands.length);
+  });
+
+
   test('get all islands', async function () {
     for (let i of islands) {
       await poiService.createIsland(i);
@@ -108,17 +152,28 @@ suite('Users API tests', function () {
 
   let users = fixtures.users;
   let newUser = fixtures.newUser;
+  let returnedUser;
+  let response;
+
+  suiteSetup(async function() {
+    returnedUser = await poiService.createUser(newUser);
+    response = await poiService.authenticate(newUser);
+  });
+
+  suiteTeardown(async function() {
+    await poiService.deleteAllUsers();
+    poiService.clearAuth();
+  });
 
   setup(async function() {
-    await poiService.deleteAllUsers();
+    //await poiService.deleteAllUsers();
   });
 
   teardown(async function() {
-    await poiService.deleteAllUsers();
+    //await poiService.deleteAllUsers();
   });
 
   test('create an user', async function() {
-    const returnedUser = await poiService.createUser(newUser);
     assert(_.some([returnedUser], newUser), 'returnedUser must be a superset of newUser');
     assert.isDefined(returnedUser._id);
   });
@@ -153,24 +208,69 @@ suite('Users API tests', function () {
     assert(newAmount === amount - 1);
   });
   test('get all users', async function() {
-    for (let i of users) {
-      await poiService.createUser(i);
+    await poiService.deleteAllUsers();
+    await poiService.createUser(newUser);
+    await poiService.authenticate(newUser);
+    for (let u of users) {
+      await poiService.createUser(u);
     }
     const allUsers = await poiService.getUsers();
-    assert.equal(allUsers.length, users.length);
+    assert.equal(allUsers.length, users.length + 1);
   });
   test('get user detail', async function() {
+    await poiService.deleteAllUsers();
+    const user = await poiService.createUser(newUser);
+    await poiService.authenticate(newUser);
     for (let i of users) {
       await poiService.createUser(i);
     }
+    const testUser = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password
+    };
+    users.unshift(testUser);
     const allUsers = await poiService.getUsers();
     for (let i = 0; i < users.length; i++) {
-      assert(_.some([allUsers[i]], users[i]), 'returnedIsland must be a superset of newIsland');
+      assert(_.some([allUsers[i]], users[i]), 'returnedUser must be a superset of newUser');
     }
   });
   test('get all users empty', async function() {
+    // const user = await poiService.createUser(newUser);
+    // await poiService.authenticate(newUser);
+    await poiService.deleteAllUsers();
     const allUsers = await poiService.getUsers();
     assert.equal(allUsers.length, 0);
+  });
+});
+
+suite('Authentication API tests JWT', function () {
+
+  let users = fixtures.users;
+  let newUser = fixtures.newUser;
+  let returnedUser;
+  let response;
+
+  suiteSetup(async function() {
+    //await poiService.deleteAllUsers();
+    returnedUser = await poiService.createUser(newUser);
+    response = await poiService.authenticate(newUser);
+  });
+
+  suiteTeardown(async function() {
+    await poiService.deleteAllUsers();
+    poiService.clearAuth();
+  });
+
+  test('authentication test', async function () {
+    assert(response.success);
+    assert.isDefined(response.token);
+  });
+  test('verify Token', async function () {
+    const userInfo = utils.decodeToken(response.token);
+    assert.equal(userInfo.email, returnedUser.email);
+    assert.equal(userInfo.userId, returnedUser._id);
   });
 });
 
@@ -178,12 +278,26 @@ suite('Categories API tests', function () {
 
   let categories = fixtures.categories;
   let newCategory = fixtures.newCategory;
+  let newUser = fixtures.newUser;
+  let response;
+  let returnedUser;
 
-  setup(async function () {
+  suiteSetup(async function() {
+    //await poiService.deleteAllUsers();
+    returnedUser = await poiService.createUser(newUser);
+    response = await poiService.authenticate(newUser);
+  });
+
+  suiteTeardown(async function() {
+    await poiService.deleteAllUsers();
+    poiService.clearAuth();
+  });
+
+  setup(async function() {
     await poiService.deleteAllCategories();
   });
 
-  teardown(async function () {
+  teardown(async function() {
     await poiService.deleteAllCategories();
   });
 

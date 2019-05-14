@@ -3,17 +3,22 @@
 const Island = require('../models/island');
 const User = require('../models/user');
 const Boom = require('boom');
+const utils = require('./utils.js');
 
 const Poi = {
   find: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       const islands = await Island.find();
       return islands;
     }
   },
   findOne: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       try {
         const island = await Island.findById({ _id: request.params.id });
@@ -27,30 +32,41 @@ const Poi = {
     }
   },
   findByUserAdded: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       const islands = await Island.find({ addedBy: request.params.id });
       return islands;
     }
   },
   findByUserModified: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       const islands = await Island.find({ modifiedBy: request.params.id });
       return islands;
     }
   },
   findByCategory: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       const islands = await Island.find({ category: request.params.id });
       return islands;
     }
   },
   create: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
+    //auth: false,
     handler: async function(request, h) {
+      const userId = utils.getUserIdFromRequest(request);
       const newPoi = new Island(request.payload);
+      //newPoi.addedBy = await User.findById({ _id: userId });
       const island = await newPoi.save();
       if(island) {
         return h.response(island).code(201);
@@ -59,35 +75,45 @@ const Poi = {
     }
   },
   deleteAll: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       await Island.remove({});
       return {success: true};
     }
   },
   removeUserAdded: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
-      await Island.remove({ addedBy: request.params.id });
+      await Island.deleteMany({ addedBy: request.params.id });
       return {success: true};
     }
   },
   removeUserModified: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
-      await Island.remove({ modifiedBy: request.params.id });
+      await Island.deleteMany({ modifiedBy: request.params.id });
       return {success: true};
     }
   },
   removeFromCategory: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
-      await Island.remove({ category: request.params.id });
+      await Island.deleteMany({ category: request.params.category });
       return {success: true};
     }
   },
   deleteOne: {
-    auth: false,
+    auth: {
+      strategy: 'jwt',
+    },
     handler: async function(request, h) {
       const island = await Island.deleteOne({ _id: request.params.id })
       if(island) {

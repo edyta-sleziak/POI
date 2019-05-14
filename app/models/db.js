@@ -18,12 +18,14 @@ db.on('disconnected', function() {
 async function seed() {
   var seeder = require('mais-mongoose-seeder')(Mongoose);
   const data = require('./initdata.json');
-  const island = require('./island');
+  const Island = require('./island');
+  const User = require('./user');
+  const Category = require('./category');
   const dbData = await seeder.seed(data, {dropDatabase: false, dropCollections: true });
   console.log(dbData);
 };
 
 db.once('open', function() {
   console.log(`database connected to ${this.name} on ${this.host}`);
-  //seed();
+  seed();
 });
