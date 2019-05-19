@@ -27,6 +27,7 @@ module.exports = [
   { method: 'GET', path: '/editIsland/{id}', config: Poi.editIsland },
   { method: 'POST', path: '/saveChanges/{id}', config: Poi.saveChanges },
   { method: 'GET', path: '/removeIsland/{id}', config: Poi.removeIsland },
+  { method: 'GET', path: '/xssTest/{id}', config: Poi.xssTest},
 
   { method: 'POST', path: '/addCategory', config: Categories.addCategory },
   { method: 'POST', path: '/editCategory/{id}', config: Categories.editCategory },

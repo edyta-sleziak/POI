@@ -5,10 +5,17 @@ const Bell = require('bell');
 const AuthCookie = require('hapi-auth-cookie');
 const cloudinary = require('cloudinary');
 const utils = require('./app/api/utils.js');
+const fs = require('fs');
 
 const server = Hapi.server({
-  port: process.env.PORT || 4000,
-  routes: { cors: true }
+  port: process.env.PORT || 3443,
+  routes: { cors: true },
+  tls: {
+    key: fs.readFileSync('private/islands.key'),
+    cert: fs.readFileSync('private/islands.crt')
+  }
+  // port: process.env.PORT || 4000,
+  // routes: { cors: true }
 });
 
 require('./app/models/db');
@@ -51,11 +58,10 @@ async function init() {
 
   let bellAuthOptions = {
     provider: 'foursquare',
-    password: 'cookie-encryption-password-secure', // String used to encrypt temporary cookie
-    // used during authorisation steps only
+    password: 'cookie-encryption-password-secure',
     clientId: process.env.foursquareClientId,
     clientSecret: process.env.foursquareClientSecret,
-    isSecure: false        // Should be 'true' in production software (requires HTTPS)
+    isSecure: true
   };
 
   server.auth.strategy('islands-oauth','bell',bellAuthOptions);

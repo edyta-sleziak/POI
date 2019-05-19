@@ -91,7 +91,7 @@ const Accounts = {
         });
         user = await newUser.save();
         request.cookieAuth.set({ id: user.id });
-        return h.redirect('/home');
+        return h.redirect('/explore');
       } catch (err) {
         return h.view('signup', { errors: [{ message: err.message }] });
       }
@@ -110,7 +110,7 @@ const Accounts = {
       if (request.auth.isAuthenticated) {
         request.cookieAuth.set(request.auth.credentials);
         console.log('authenticated');
-        return h.redirect('/home')
+        return h.view('explore')
       } else {
         return h.view('login', { title: 'Login to see more' });
       }
@@ -137,7 +137,7 @@ const Accounts = {
             return h.redirect('/adminDashboard')
           } else {
             console.log(user._id + ' - isAdmin: ' + user.isAdmin);
-            return h.redirect('/home')
+            return h.redirect('/explore')
           }
         }
       } catch (err) {

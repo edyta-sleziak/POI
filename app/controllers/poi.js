@@ -28,12 +28,13 @@ const Poi = {
   },
   create: {
     handler: async function(request, h) {
-      const user = await request.auth.credentials;
-      if (user.isAdmin == true) {
+      const id = request.auth.credentials.id;
+      const user = await User.findById(id);
+      if (user.isAdmin === true) {
         return h.view('createPOI-admin', {
           title: 'Add island',
         })
-      } else if (user.isAdmin == false) {
+      } else {
         return h.view('createPOI-user', {
           title: 'Add island',
         })
@@ -45,6 +46,7 @@ const Poi = {
       const id = request.auth.credentials.id;
       const user = await User.findById(id);
       const data = request.payload;
+      const category = Category.findById(data.category);
       const newPOI = new Island({
         name: data.name,
         description: data.description,
@@ -52,10 +54,13 @@ const Poi = {
         modifiedBy: user.fName + ' ' + user.lName,
         longitude: data.longitude,
         latitude: data.latitude,
+        category: category.name,
         createdDate: Date("<YYYY-mm-ddTHH:MM:ss>"),
         lastModifiedDate: Date("<YYYY-mm-ddTHH:MM:ss>")
       });
+      console.log('Island created');
       await newPOI.save();
+      console.log('Island saved');
       const islands = await Island.find();
       if (user.isAdmin == true) {
         console.log(user._id + ' - isAdmin: '+ user.isAdmin);
@@ -151,6 +156,13 @@ const Poi = {
         title: 'Explore',
         islands: islands
       });
+    }
+  },
+  xssTest: {
+    auth: false,
+    handler: async function(request, h) {
+      const id = request.params.id;
+      return 'XSS Test' + id;
     }
   }
 };
