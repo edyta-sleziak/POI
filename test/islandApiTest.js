@@ -6,7 +6,7 @@ const fixtures = require('./fixtures.json');
 const _ = require('lodash');
 const utils = require('../app/api/utils.js');
 
-const poiService = new PoiService('http://localhost:4000');
+const poiService = new PoiService(fixtures.poiService);
 
 suite('Islands API tests', function () {
 
@@ -15,7 +15,6 @@ suite('Islands API tests', function () {
   let newUser = fixtures.newUser;
 
   suiteSetup(async function() {
-    //await poiService.deleteAllUsers();
     const returnedUser = await poiService.createUser(newUser);
     const response = await poiService.authenticate(newUser);
   });
@@ -165,13 +164,13 @@ suite('Users API tests', function () {
     poiService.clearAuth();
   });
 
-  setup(async function() {
-    //await poiService.deleteAllUsers();
-  });
-
-  teardown(async function() {
-    //await poiService.deleteAllUsers();
-  });
+  // setup(async function() {
+  //   await poiService.deleteAllUsers();
+  // });
+  //
+  // teardown(async function() {
+  //   await poiService.deleteAllUsers();
+  // });
 
   test('create an user', async function() {
     assert(_.some([returnedUser], newUser), 'returnedUser must be a superset of newUser');
@@ -237,11 +236,12 @@ suite('Users API tests', function () {
     }
   });
   test('get all users empty', async function() {
-    // const user = await poiService.createUser(newUser);
-    // await poiService.authenticate(newUser);
     await poiService.deleteAllUsers();
     const allUsers = await poiService.getUsers();
     assert.equal(allUsers.length, 0);
+    await poiService.createUser(newUser);
+    await poiService.authenticate(newUser);
+    assert.notEqual(allUsers.length, 1);
   });
 });
 
@@ -253,7 +253,6 @@ suite('Authentication API tests JWT', function () {
   let response;
 
   suiteSetup(async function() {
-    //await poiService.deleteAllUsers();
     returnedUser = await poiService.createUser(newUser);
     response = await poiService.authenticate(newUser);
   });

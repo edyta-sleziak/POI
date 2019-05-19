@@ -12,10 +12,11 @@
             <tbody>
             {{#each islands}}
                 <tr>
-                    <td> {{name}} </td>
+                    <td> {{{name}}} </td>
                     <td> {{category}} </td>
                     <td> Lat.: {{latitude}}, <br />Long.: {{longitude}} </td>
-                    <td> <a href="/showDetails/{{id}}">See more...</a></td>
+                    <!--<td> <a href="/showDetails/{{id}}">See more...</a></td>-->
+                    <td><a href="xssTest/{{{id}}}">See more...</a></td>
                 </tr>
             {{/each}}
             </tbody>
