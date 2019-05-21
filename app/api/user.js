@@ -3,6 +3,8 @@
 const UserModel = require('../models/user');
 const Boom = require('boom');
 const utils = require('../api/utils.js');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 
 const User = {
@@ -63,6 +65,53 @@ const User = {
         return { success: true }
       }
       return Boom.notFound('Id not found');
+    }
+  },
+  editUser: {
+    auth: {
+      strategy: 'jwt',
+    },
+    handler: async function(request, h) {
+      try {
+        let editedUser = await request.payload;
+        const currentUserId = utils.getUserIdFromRequest(request);
+        const currentUser = await UserModel.findById({ _id: currentUserId });
+        if (currentUser) {
+          if (currentUser.isAdmin || currentUser._id === editedUser._id) {
+            const user = await UserModel.findById({ _id: editedUser._id });
+            if (user) {
+              user.firstName = editedUser.firstName;
+              user.lastName = editedUser.lastName;
+              if (editedUser.password != null) {
+                user.password = await bcrypt.hash(editedUser.password, saltRounds);
+              }
+              user.isAdmin = editedUser.isAdmin;
+              await user.save();
+              return h.response(user).code(201);
+            } else {
+              return h.response(user).code(500);
+            }
+          } else {
+            console.log("No permission");
+            return h.response(user).code(401)
+          }
+        } else {
+          console.log("Unable to find current user");
+          return h.response(user).code(404)
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  },
+  getLoggedUserData: {
+    auth: {
+      strategy: 'jwt',
+    },
+    handler: async function(request, h) {
+      const userId = utils.getUserIdFromRequest(request);
+      const user = await UserModel.findById({ _id: userId });
+      return user;
     }
   },
   authenticate: {

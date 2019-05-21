@@ -14,6 +14,7 @@ module.exports = [
   { method: 'DELETE', path: '/api/poi/{id}/userAdded', config: Poi.removeUserAdded },
   { method: 'DELETE', path: '/api/poi/{category}/category', config: Poi.removeFromCategory },
   { method: 'DELETE', path: '/api/poi/{id}/userModified', config: Poi.removeUserModified },
+  { method: 'PUT', path: '/api/poi/{id}', config: Poi.editIsland },
 
   { method: 'POST', path: '/api/user/authenticate', config: User.authenticate },
   { method: 'GET', path: '/api/user', config: User.find },
@@ -21,6 +22,8 @@ module.exports = [
   { method: 'POST', path: '/api/user', config: User.create },
   { method: 'DELETE', path: '/api/user', config: User.deleteAll },
   { method: 'DELETE', path: '/api/user/{id}', config: User.deleteOne },
+  { method: 'GET', path: '/api/user/getLoggedUserData', config: User.getLoggedUserData },
+  { method: 'PUT', path: '/api/user/editUser', config: User.editUser },
 
   { method: 'GET', path: '/api/category', config: Category.find },
   { method: 'GET', path: '/api/category/{id}', config: Category.findOne },

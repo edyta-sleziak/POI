@@ -121,6 +121,31 @@ const Poi = {
       }
       return Boom.notFound('Id not found');
     }
+  },
+  editIsland: {
+    auth: {
+      strategy: 'jwt',
+    },
+    handler: async function(request, h) {
+      try {
+        const island = await Island.findById({ _id: request.params.id });
+        if (!island) {
+          return Boom.notFound('No island with this id');
+        }
+        const userId = utils.getUserIdFromRequest(request);
+        const user = await UserModel.findById({ _id: userId });
+        island.name = request.params.name;
+        island.description = request.params.description;
+        island.category = request.params.category;
+        island.latitude = request.params.latitude;
+        island.longitude = request.params.longitude;
+        island.modifiedBy = user.firstName + ' ' + user.lastName;
+        island.lastModifiedDate = Date("<YYYY-mm-ddTHH:MM:ss>");
+        return island;
+      } catch (err) {
+        return Boom.notFound('No island with this id');
+      }
+    }
   }
 };
 
