@@ -21,7 +21,6 @@ const server = Hapi.server({
 require('./app/models/db');
 
 async function init() {
-  //await server.register(require('hapi-auth-cookie'));
   await server.register(require('inert'));
   await server.register(require('vision'));
   await server.register([Bell, AuthCookie]);

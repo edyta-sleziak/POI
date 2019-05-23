@@ -39,6 +39,7 @@ const User = {
     auth: false,
     handler: async function(request, h) {
       const newUser = new UserModel(request.payload);
+      newUser.password = await bcrypt.hash(request.payload.password, saltRounds);
       const user = await newUser.save();
       if(user) {
         return h.response(user).code(201);
@@ -121,9 +122,15 @@ const User = {
         const user = await UserModel.findByEmail(request.payload.email);
         if (!user) {
           return Boom.notFound('Authentication failed. User not found');
+        } else {
+          if(!await user.comparePassword(request.payload.password)) {
+            const message = 'Password mismatch';
+            throw new Boom(message);
+          } else {
+            const token = utils.createToken(user);
+            return h.response({ success: true, token: token }).code(201);
+          }
         }
-        const token = utils.createToken(user);
-        return h.response({ success: true, token: token }).code(201);
       } catch (err) {
         return Boom.notFound('internal db failure');
       }
