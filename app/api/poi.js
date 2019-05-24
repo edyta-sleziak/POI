@@ -36,7 +36,7 @@ const Poi = {
       strategy: 'jwt',
     },
     handler: async function(request, h) {
-      const islands = await Island.find({ addedBy: request.params.id });
+      const islands = await Island.find({ addedBy: request.params.addedBy });
       return islands;
     }
   },
@@ -45,7 +45,7 @@ const Poi = {
       strategy: 'jwt',
     },
     handler: async function(request, h) {
-      const islands = await Island.find({ modifiedBy: request.params.id });
+      const islands = await Island.find({ modifiedBy: request.params.modifiedBy });
       return islands;
     }
   },
@@ -54,7 +54,7 @@ const Poi = {
       strategy: 'jwt',
     },
     handler: async function(request, h) {
-      const islands = await Island.find({ category: request.params.id });
+      const islands = await Island.find({ category: request.params.category });
       return islands;
     }
   },
@@ -88,7 +88,7 @@ const Poi = {
       strategy: 'jwt',
     },
     handler: async function(request, h) {
-      await Island.deleteMany({ addedBy: request.params.id });
+      await Island.deleteMany({ addedBy: request.params.addedBy });
       return {success: true};
     }
   },
@@ -97,7 +97,7 @@ const Poi = {
       strategy: 'jwt',
     },
     handler: async function(request, h) {
-      await Island.deleteMany({ modifiedBy: request.params.id });
+      await Island.deleteMany({ modifiedBy: request.params.modifiedBy });
       return {success: true};
     }
   },
@@ -115,11 +115,14 @@ const Poi = {
       strategy: 'jwt',
     },
     handler: async function(request, h) {
-      const island = await Island.deleteOne({ _id: request.params.id })
+      const island = await Island.findById({ _id: request.params.id });
+      console.log(island);
       if(island) {
+        await Island.deleteOne(island);
         return { success: true }
+      } else {
+        return Boom.notFound('Id not found');
       }
-      return Boom.notFound('Id not found');
     }
   },
   editIsland: {
@@ -128,22 +131,30 @@ const Poi = {
     },
     handler: async function(request, h) {
       try {
+        console.log('debug1');
         const island = await Island.findById({ _id: request.params.id });
+        const newData = await request.payload;
+        console.log(island._id);
         if (!island) {
           return Boom.notFound('No island with this id');
         }
+        console.log('debug2');
         const userId = utils.getUserIdFromRequest(request);
-        const user = await UserModel.findById({ _id: userId });
-        island.name = request.params.name;
-        island.description = request.params.description;
-        island.category = request.params.category;
-        island.latitude = request.params.latitude;
-        island.longitude = request.params.longitude;
-        island.modifiedBy = user.firstName + ' ' + user.lastName;
-        island.lastModifiedDate = Date("<YYYY-mm-ddTHH:MM:ss>");
+        console.log(userId);
+        const user = await User.findById({ _id: userId });
+        const date = Date("<YYYY-mm-ddTHH:MM:ss>");
+        console.log('debug4');
+        island.name = newData.name;
+        island.description = newData.description;
+        island.category = newData.category;
+        island.latitude = newData.latitude;
+        island.longitude = newData.longitude;
+        island.modifiedBy = user;
+        island.lastModifiedDate = date;
+        await island.save();
         return island;
       } catch (err) {
-        return Boom.notFound('No island with this id');
+        return Boom.notFound('Error occurred');
       }
     }
   }

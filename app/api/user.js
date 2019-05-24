@@ -61,11 +61,13 @@ const User = {
       strategy: 'jwt',
     },
     handler: async function(request, h) {
-      const user = await UserModel.deleteOne({ _id: request.params.id });
+      const user = await UserModel.findById({ _id: request.params.id });
       if(user) {
+        await UserModel.deleteOne(user);
         return { success: true }
+      } else {
+        return Boom.notFound('Id not found');
       }
-      return Boom.notFound('Id not found');
     }
   },
   editUser: {
