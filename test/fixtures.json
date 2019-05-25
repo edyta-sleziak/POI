@@ -34,6 +34,64 @@
     "password" : "secret"
   }
 ,
+  "reviews" : [
+    {
+      "island": "Island1",
+      "reviewText": "Review1 text",
+      "addedBy": "User1"
+    },
+    {
+      "island": "Island1",
+      "reviewText": "Review2 text",
+      "addedBy": "User2"
+    },
+    {
+      "island": "Island2",
+      "reviewText": "Review3 text",
+      "addedBy": "User1"
+    },
+    {
+      "island": "Island2",
+      "reviewText": "Review4 text",
+      "addedBy": "User2"
+    }
+  ],
+  "newReview" :
+  {
+    "island": "Island3",
+    "reviewText": "Review text",
+    "addedBy": "User3"
+  }
+,
+  "ratings" : [
+    {
+      "island": "Island1",
+      "rating": 1,
+      "addedBy": "User1"
+    },
+    {
+      "island": "Island1",
+      "rating": 2,
+      "addedBy": "User2"
+    },
+    {
+      "island": "Island2",
+      "rating": 3,
+      "addedBy": "User1"
+    },
+    {
+      "island": "Island2",
+      "rating": 4,
+      "addedBy": "User2"
+    }
+  ],
+  "newRating" :
+  {
+    "island": "Island3",
+    "rating": 5,
+    "addedBy": "User3"
+  }
+,
   "categories" : [
     {
       "name" : "Category1"

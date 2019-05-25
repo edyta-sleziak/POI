@@ -1,6 +1,8 @@
 const Poi = require('./app/api/poi');
 const User = require('./app/api/user');
 const Category = require('./app/api/category');
+const Rating = require('./app/api/rating');
+const Review =  require('./app/api/review');
 
 module.exports = [
   { method: 'GET', path: '/api/poi', config: Poi.find },
@@ -31,4 +33,17 @@ module.exports = [
   { method: 'DELETE', path: '/api/category', config: Category.deleteAll },
   { method: 'DELETE', path: '/api/category/{id}', config: Category.deleteOne },
 
+  { method: 'GET', path: '/api/review', config: Review.find },
+  { method: 'GET', path: '/api/review/{id}', config: Review.findOne },
+  { method: 'GET', path: '/api/review/{id}/userAdded', config: Review.findByReviewer },
+  { method: 'GET', path: '/api/review/{id}/island', config: Review.findByIsland },
+  { method: 'POST', path: '/api/review', config: Review.create },
+  { method: 'DELETE', path: '/api/review', config: Review.deleteAll },
+  { method: 'DELETE', path: '/api/review/{id}', config: Review.deleteOne },
+
+  { method: 'GET', path: '/api/rating', config: Rating.find },
+  { method: 'GET', path: '/api/rating/{id}/userAdded', config: Rating.findByUser },
+  { method: 'GET', path: '/api/rating/{id}/island', config: Rating.findByIsland },
+  { method: 'POST', path: '/api/rating', config: Rating.create },
+  { method: 'DELETE', path: '/api/rating', config: Rating.deleteAll },
 ]

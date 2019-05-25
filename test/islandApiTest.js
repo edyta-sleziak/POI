@@ -300,34 +300,34 @@ suite('Categories API tests', function () {
     await poiService.deleteAllCategories();
   });
 
-  test('create new category', async function () {
+  test('create new category', async function() {
     let returnedCategory = await poiService.createCategory(newCategory);
     console.log(returnedCategory);
     console.log(newCategory);
     assert(_.some([returnedCategory], newCategory), 'returnedUser must be a superset of newUser');
     assert.isDefined(returnedCategory._id);
   });
-  test('get category', async function () {
+  test('get category', async function() {
     const i1 = await poiService.createCategory(newCategory);
     const i2 = await poiService.getCategory(i1._id);
     assert.deepEqual(i1, i2);
   });
-  test('get invalid category', async function () {
+  test('get invalid category', async function() {
     const i1 = await poiService.getCategory('1234');
     assert.isNull(i1);
     const i2 = await poiService.getCategory('012345678901234567890123');
     assert.isNull(i2);
   });
-  test('delete Category', async function () {
+  test('delete Category', async function() {
     let category = await poiService.createCategory(newCategory);
     assert(category._id != null);
     await poiService.deleteOneCategory(category._id);
     category = await poiService.getCategory(category._id);
     assert(category == null);
   });
-  test('delete category one from many', async function () {
+  test('delete category one from many', async function() {
     for (let i of categories) {
-    await poiService.createCategory(i);
+      await poiService.createCategory(i);
     }
     let category = await poiService.createCategory(newCategory);
     let allCategories = await poiService.getCategories();
@@ -337,14 +337,14 @@ suite('Categories API tests', function () {
     const newAmount = allCategories.length;
     assert(newAmount === amount - 1);
   });
-  test('get all categories', async function () {
+  test('get all categories', async function() {
     for (let i of categories) {
       await poiService.createCategory(i);
     }
     const allCategories = await poiService.getCategories();
     assert.equal(allCategories.length, categories.length);
   });
-  test('get category details', async function () {
+  test('get category details', async function() {
     for (let i of categories) {
       await poiService.createCategory(i);
     }
@@ -353,9 +353,175 @@ suite('Categories API tests', function () {
       assert(_.some([allCategories[i]], categories[i]), 'returnedCategories must be a superset of newCategories');
     }
   });
-  test('get all categories empty', async function () {
+  test('get all categories empty', async function() {
     const allCategories = await poiService.getCategories();
     assert.equal(allCategories.length, 0);
   });
+});
 
+suite('Review API tests', function () {
+
+  let reviews = fixtures.reviews;
+  let newReview = fixtures.newReview;
+  let newUser = fixtures.newUser;
+  let response;
+  let returnedUser;
+
+  suiteSetup(async function() {
+    returnedUser = await poiService.createUser(newUser);
+    response = await poiService.authenticate(newUser);
+  });
+
+  suiteTeardown(async function() {
+    await poiService.deleteAllUsers();
+    poiService.clearAuth();
+  });
+
+  setup(async function() {
+    await poiService.deleteAllReviews();
+  });
+
+  teardown(async function() {
+    await poiService.deleteAllReviews();
+  });
+
+  test('create new review', async function() {
+    let returnedReview = await poiService.createReview(newReview);
+    console.log(returnedReview);
+    console.log(newReview);
+    assert(_.some([returnedReview], newReview), 'returnedReview must be a superset of newReview');
+    assert.isDefined(returnedReview._id);
+  });
+  test('get review', async function() {
+    const i1 = await poiService.createReview(newReview);
+    const i2 = await poiService.getReview(i1._id);
+    assert.deepEqual(i1, i2);
+  });
+  test('get invalid review', async function() {
+    const i1 = await poiService.getReview('1234');
+    assert.isNull(i1);
+    const i2 = await poiService.getReview('012345678901234567890123');
+    assert.isNull(i2);
+  });
+  test('delete Review', async function() {
+    let review = await poiService.createReview(newReview);
+    assert(review._id != null);
+    await poiService.deleteOneReview(review._id);
+    review = await poiService.getReview(review._id);
+    assert(review == null);
+  });
+  test('delete review one from many', async function() {
+    for (let i of reviews) {
+      await poiService.createReview(i);
+    }
+    let review = await poiService.createReview(newReview);
+    let allReviews = await poiService.getReviews();
+    const amount = allReviews.length;
+    await poiService.deleteOneReview(review._id);
+    allReviews = await poiService.getReviews();
+    const newAmount = allReviews.length;
+    assert(newAmount === amount - 1);
+  });
+  test('get all reviews', async function() {
+    for (let i of reviews) {
+      await poiService.createReview(i);
+    }
+    const allReviews = await poiService.getReviews();
+    assert.equal(allReviews.length, reviews.length);
+  });
+  test('get review details', async function() {
+    for (let i of reviews) {
+      await poiService.createReview(i);
+    }
+    const allReviews = await poiService.getReviews();
+    for (let i = 0; i < reviews.length; i++) {
+      assert(_.some([allReviews[i]], reviews[i]), 'AllReviews must be a superset of reviews');
+    }
+  });
+  test('get all reviews of given island', async function() {
+    for (let i of reviews) {
+      await poiService.createReview(i);
+    }
+    const allMatchingReviews = await poiService.getReviewByIsland("Island1");
+    const allReviews = await poiService.getReviews();
+    const allNotMatchingReviews = await poiService.getReviewByIsland("Island2");
+    assert.equal(allMatchingReviews.length, allReviews.length - allNotMatchingReviews.length);
+  });
+  test('get all reviews added by given user', async function() {
+    for (let i of reviews) {
+      await poiService.createReview(i);
+    }
+    const allMatchingReviews = await poiService.getReviewByUser("User1");
+    const allReviews = await poiService.getReviews();
+    const allNotMatchingReviews = await poiService.getReviewByUser("User2");
+    assert.equal(allMatchingReviews.length, allReviews.length - allNotMatchingReviews.length);
+  });
+  test('get all reviews empty', async function() {
+    const allReviews = await poiService.getReviews();
+    assert.equal(allReviews.length, 0);
+  });
+});
+
+suite('Ratings API tests', function () {
+
+  let ratings = fixtures.ratings;
+  let newRating = fixtures.newRating;
+  let newUser = fixtures.newUser;
+  let response;
+  let returnedUser;
+
+  suiteSetup(async function() {
+    returnedUser = await poiService.createUser(newUser);
+    response = await poiService.authenticate(newUser);
+  });
+
+  suiteTeardown(async function() {
+    await poiService.deleteAllUsers();
+    poiService.clearAuth();
+  });
+
+  setup(async function() {
+    await poiService.deleteAllRatings();
+  });
+
+  teardown(async function() {
+    await poiService.deleteAllRatings();
+  });
+
+  test('create new rating', async function() {
+    let returnedRating = await poiService.createRating(newRating);
+    console.log(returnedRating);
+    console.log(newRating);
+    assert(_.some([returnedRating], newRating), 'returnedRating must be a superset of newRating');
+    assert.isDefined(returnedRating._id);
+  });
+  test('get all ratings', async function() {
+    for (let i of ratings) {
+      await poiService.createRating(i);
+    }
+    const allRatings = await poiService.getRatings();
+    assert.equal(allRatings.length, ratings.length);
+  });
+  test('get all ratings empty', async function() {
+    const allRatings = await poiService.getRatings();
+    assert.equal(allRatings.length, 0);
+  });
+  test('get all ratings of given island', async function() {
+    for (let i of ratings) {
+      await poiService.createRating(i);
+    }
+    const allMatchingRatings = await poiService.getRatingByIsland("Island1");
+    const allRatings = await poiService.getRatings();
+    const allNotMatchingRatings = await poiService.getRatingByIsland("Island2");
+    assert.equal(allMatchingRatings.length, allRatings.length - allNotMatchingRatings.length);
+  });
+  test('get all ratings added by given user', async function() {
+    for (let i of ratings) {
+      await poiService.createRating(i);
+    }
+    const allMatchingRatings = await poiService.getRatingByUser("User1");
+    const allRatings = await poiService.getRatings();
+    const allNotMatchingRatings = await poiService.getRatingByUser("USer2");
+    assert.equal(allMatchingRatings.length, allRatings.length - allNotMatchingRatings.length);
+  });
 });

@@ -150,6 +150,86 @@ class PoiService {
     return response.data;
   }
 
+  async deleteAllReviews() {
+    const response = await axios.delete(this.baseUrl + '/api/review');
+    return response.data;
+  }
+
+  async createReview(newReview) {
+    const response = await axios.post(this.baseUrl + '/api/review', newReview);
+    return response.data;
+  }
+
+  async getReview(id) {
+    try {
+      const response = await axios.get(this.baseUrl + '/api/review/' + id);
+      return response.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async deleteOneReview(id) {
+    const response = await axios.delete(this.baseUrl + '/api/review/' + id);
+    return response.data;
+  }
+
+  async getReviews() {
+    const response = await axios.get(this.baseUrl + '/api/review');
+    return response.data;
+  }
+
+  async getReviewByIsland(id) {
+    try {
+      const response = await axios.get(this.baseUrl + '/api/review/' + id + '/island');
+      return response.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async getReviewByUser(id) {
+    try {
+      const response = await axios.get(this.baseUrl + '/api/review/' + id + '/userAdded');
+      return response.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async deleteAllRatings() {
+    const response = await axios.delete(this.baseUrl + '/api/rating');
+    return response.data;
+  }
+
+  async createRating(newRating) {
+    const response = await axios.post(this.baseUrl + '/api/rating', newRating);
+    return response.data;
+  }
+
+  async getRatings() {
+    const response = await axios.get(this.baseUrl + '/api/rating');
+    return response.data;
+  }
+
+  async getRatingByIsland(id) {
+    try {
+      const response = await axios.get(this.baseUrl + '/api/rating/' + id + '/island');
+      return response.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async getRatingByUser(id) {
+    try {
+      const response = await axios.get(this.baseUrl + '/api/rating/' + id + '/userAdded');
+      return response.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
 }
 
 module.exports = PoiService;
