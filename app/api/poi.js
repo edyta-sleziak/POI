@@ -66,7 +66,9 @@ const Poi = {
     handler: async function(request, h) {
       const userId = utils.getUserIdFromRequest(request);
       const newPoi = new Island(request.payload);
-      //newPoi.addedBy = await User.findById({ _id: userId });
+      newPoi.addedBy = userId;
+      newPoi.modifiedBy = userId;
+      newPoi.description = '';
       const island = await newPoi.save();
       if(island) {
         return h.response(island).code(201);

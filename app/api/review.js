@@ -2,6 +2,7 @@
 
 const ReviewModel = require('../models/Review');
 const Boom = require('boom');
+const utils = require('./utils.js');
 
 const Review = {
 
@@ -35,7 +36,7 @@ const Review = {
       strategy: 'jwt',
     },
     handler: async function(request, h) {
-      const reviews = await ReviewModel.find({ addedBy: request.params._id });
+      const reviews = await ReviewModel.find({ addedBy: request.params.id });
       return reviews;
     }
   },
@@ -44,7 +45,8 @@ const Review = {
       strategy: 'jwt',
     },
     handler: async function(request, h) {
-      const reviews = await ReviewModel.find({ island: request.params._id });
+      const reviews = await ReviewModel.find({ island: request.params.id });
+      console.log(reviews);
       return reviews;
     }
   },
@@ -54,6 +56,11 @@ const Review = {
     },
     handler: async function(request, h) {
       const newReview = new ReviewModel(request.payload);
+      const date = Date("<YYYY-mm-ddTHH:MM:ss>");
+      newReview.reviewText = request.payload.reviewText;
+      newReview.addedBy = utils.getUserIdFromRequest(request);
+      newReview.dateAdded = date;
+      newReview.island = request.payload.island;
       const Review = await newReview.save();
       if(Review) {
         return h.response(Review).code(201);
