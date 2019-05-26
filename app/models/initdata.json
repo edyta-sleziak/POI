@@ -5,14 +5,14 @@
       "firstName": "Admin",
       "lastName": "Admin",
       "email": "admin@admin",
-      "password": "admin",
+      "password": "$2b$10$d.V/yQdBQ1ekBm77/T8yGOrk6fA03ublD3dbGcBl09S3FNhqGXaTS",
       "isAdmin": 1
     },
     "User": {
       "firstName": "User",
       "lastName": "User",
       "email": "user@user",
-      "password": "user",
+      "password": "$2b$10$rupbgb4/U.HbGyVDn9Wruu3UH/TRfp9xSz56RPBH8wszKFa0/Zsgy",
       "isAdmin": 0
     }
   },

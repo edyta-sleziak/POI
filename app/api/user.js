@@ -32,6 +32,22 @@ const User = {
       }
     }
   },
+  getUserName: {
+    auth: {
+      strategy: 'jwt',
+    },
+    handler: async function(request, h) {
+      try {
+        const user = await UserModel.findById(request.params.id );
+        if (!user) {
+          return Boom.notFound('No user with this id');
+        }
+        return user.firstName + ' ' + user.lastName;
+      } catch (err) {
+        return Boom.notFound('No Candidate with this id');
+      }
+    }
+  },
   create: {
     auth: false,
     handler: async function(request, h) {
